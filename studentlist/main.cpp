@@ -7,11 +7,20 @@
 
 using namespace std;
 
-void addingtohash(int add, Node* (&student)[100], char* (&first)[1000], char* (&last)[1000], int &idnum);
+void addingtohash(int &add, Node* (&student)[100], Node* &next, char* (&first)[1000], char* (&last)[1000], int &idnum);
+int hashfunction(int idnum);
 
 int main(){
 
   Node* hashtable[100];
+
+  int tablesize = 100;
+  
+  for (int i = 0; i < tablesize; i++){
+
+    hashtable[i] = NULL;
+
+  }
   
   char input[100];
 
@@ -64,7 +73,9 @@ int main(){
 
       cin >> adding;
 
-      addingtohash(adding, hashtable, firstname, lastname, idnum);
+      Node* next = NULL;
+
+      addingtohash(adding, hashtable, next, firstname, lastname, idnum);
       
     }
 
@@ -76,8 +87,12 @@ int main(){
 
     if (strcmp(input, "PRINT") == 0) {
 
-      // print function
+      for (int i = 0; i < tablesize; i++){
 
+	
+
+      }
+      
     }
 
     if (strcmp(input, "QUIT") == 0) {
@@ -90,28 +105,55 @@ int main(){
 }
 
 
-void addingtohash(int add, Node* (&student)[100], char* (&first)[1000], char* (&last)[1000], int &idnum){
+void addingtohash(int &add, Node* (&student)[100], Node* &next,  char* (&first)[1000], char* (&last)[1000], int &idnum){
+
+  int position = hashfunction(idnum);
   
-  for (int i = 0; i < add; i++){
+  if (add != 0) {
+    for (int i = 0; i < add; i++){
 
-    int x = rand() % 20;
-
-    if (student == NULL){
-
-      float grade = rand() % 4; // haha
-
-      idnum++;
-
-      Node* student = new Node();
+      int x = rand() % 20;
       
-      strcpy(student->firstname, first[x]);
-      strcpy(student->lastname, last[x]);
+      if (student[position] == NULL){
+
+	float grade = rand() % 4; // haha
+
+	idnum++;
+
+	Node* student = new Node();
       
-      student->gpa = grade;
+	strcpy(student->firstname, first[x]);
+	strcpy(student->lastname, last[x]);
       
-      student->id = idnum;
+	student->gpa = grade;
+      
+	student->id = idnum;
+
+	add--;
+      }
+
+      else if (student[position] != NULL) {
+
+	addingtohash(add, student, next, first, last, idnum);
+
+      }
     }
     
-
+    
   }
+
+}
+
+int hashfunction(int idnum){
+
+  int hash = (idnum + 26 * 7) % 100;
+
+  return hash;
+  
+
+}
+
+void print(){
+
+
 }

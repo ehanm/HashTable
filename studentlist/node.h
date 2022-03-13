@@ -4,6 +4,8 @@
 using namespace std;
 
 struct Node {
+
+  Node* next = NULL;
   
   char firstname[1000];
   char lastname[1000];
