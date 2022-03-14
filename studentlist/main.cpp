@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstring>
 #include <iomanip>
@@ -40,8 +39,9 @@ int main(){
   newfile.open("firstname.txt");
   for (int i = 0; i < 20; i++){
 
-    firstname[i] = new char[80];
-    newfile >> firstname[i];
+    char* firstnames = new char[80];
+    newfile >> firstnames;
+    firstname[i] = firstnames;
 
   }
 
@@ -50,11 +50,18 @@ int main(){
   newfile.open("lastname.txt");
   for (int i = 0; i < 20; i++){
 
-    lastname[i] = new char[80];
-    newfile >> lastname[i];
-
+    char* lastnames = new char[80];
+    newfile >> lastnames;
+    lastname[i] = lastnames;
   }
 
+  char* test = new char[80];
+
+  strcpy(test, lastname[0]);
+
+  cout << test;
+  
+  
   newfile.close();
 
   int idnum = 0;
@@ -89,7 +96,26 @@ int main(){
 
       for (int i = 0; i < tablesize; i++){
 
-	
+	if (hashtable[i] != NULL){
+
+	  Node* temp = hashtable[i];
+	  
+	  for (int i = 0; i < 100; i++){
+
+	    cout << temp->firstname[i];
+
+	  }
+	  for (int i = 0; i < 100; i++){
+
+	    cout << temp->lastname[i];
+
+	  }
+	  
+	  cout << temp->gpa;
+	  cout << temp->id;
+	  
+
+	}
 
       }
       
@@ -121,12 +147,26 @@ void addingtohash(int &add, Node* (&student)[100], Node* &next,  char* (&first)[
 	idnum++;
 
 	Node* student = new Node();
-      
-	strcpy(student->firstname, first[x]);
-	strcpy(student->lastname, last[x]);
-      
+
+	strcpy(student->firstname, first[rand() % 20]);
+	strcpy(student->lastname, last[rand() % 20]);
+
+	cout << "gets here";
+	
+	for (int i = 0; i < 100; i++){
+	  
+	  cout << student->firstname[i];
+
+	}
+
+	for (int i = 0; i < 100; i++) {
+
+	  cout << student->lastname[i];
+	  
+	}
+
 	student->gpa = grade;
-      
+	
 	student->id = idnum;
 
 	add--;
@@ -135,7 +175,7 @@ void addingtohash(int &add, Node* (&student)[100], Node* &next,  char* (&first)[
       else if (student[position] != NULL) {
 
 	addingtohash(add, student, next, first, last, idnum);
-
+	cout << "does this";
       }
     }
     
