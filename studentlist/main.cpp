@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iomanip>
 #include <fstream>
+#include <stdlib.h>
 #include "node.h"
 
 using namespace std;
@@ -34,36 +35,28 @@ int main(){
 
   // learned to do from https://www.tutorialspoint.com/how-to-read-a-text-file-with-cplusplus
   
-  fstream newfile;
+  fstream newfirst;
 
-  newfile.open("firstname.txt");
+  newfirst.open("firstname.txt");
   for (int i = 0; i < 20; i++){
 
     char* firstnames = new char[80];
-    newfile >> firstnames;
+    newfirst >> firstnames;
     firstname[i] = firstnames;
 
   }
-
-  newfile.close();
-
-  newfile.open("lastname.txt");
+  
+  fstream newlast;
+  
+  newlast.open("lastname.txt");
   for (int i = 0; i < 20; i++){
 
     char* lastnames = new char[80];
-    newfile >> lastnames;
+    newlast >> lastnames;
     lastname[i] = lastnames;
   }
-
-  char* test = new char[80];
-
-  strcpy(test, lastname[0]);
-
-  cout << test;
   
   
-  newfile.close();
-
   int idnum = 0;
 
   while (stilladding == true){
@@ -99,19 +92,29 @@ int main(){
 	if (hashtable[i] != NULL){
 
 	  Node* temp = hashtable[i];
-	  
+
+	  cout << "Name: ";
 	  for (int i = 0; i < 100; i++){
 
 	    cout << temp->firstname[i];
 
 	  }
+
+	  cout << " ";
 	  for (int i = 0; i < 100; i++){
 
 	    cout << temp->lastname[i];
 
 	  }
+
+	  cout << " GPA: ";
 	  
 	  cout << temp->gpa;
+
+	  cout << " ";
+	  
+	  cout << "ID: ";
+	  
 	  cout << temp->id;
 	  
 
@@ -131,43 +134,61 @@ int main(){
 }
 
 
-void addingtohash(int &add, Node* (&student)[100], Node* &next,  char* (&first)[1000], char* (&last)[1000], int &idnum){
+void addingtohash(int &add, Node* (&student)[100], Node* &next, char* (&first)[1000], char* (&last)[1000], int &idnum){
 
   int position = hashfunction(idnum);
   
   if (add != 0) {
     for (int i = 0; i < add; i++){
 
-      int x = rand() % 20;
+      srand(time(NULL));
       
-      if (student[position] == NULL){
+      int x = (rand() % 20);
 
-	float grade = rand() % 4; // haha
+      srand(time(NULL));
 
+      int y = (rand() % 20);
+            
+      if (student[position] == NULL) {
+
+	srand(time(NULL));
+
+	float maxgrade = 4.0;
+
+	float grade = (float)rand()/RAND_MAX * maxgrade;
+
+	while (grade > 4){
+
+	  grade--;
+
+	}
+	
+	cout << grade;
+	
 	idnum++;
 
-	Node* student = new Node();
+        Node* newstudent = new Node();
 
-	strcpy(student->firstname, first[rand() % 20]);
-	strcpy(student->lastname, last[rand() % 20]);
+	strcpy(newstudent->firstname, first[x]);
+	strcpy(newstudent->lastname, last[y]);
 
-	cout << "gets here";
-	
 	for (int i = 0; i < 100; i++){
 	  
-	  cout << student->firstname[i];
+	  cout << newstudent->firstname[i];
 
 	}
 
 	for (int i = 0; i < 100; i++) {
 
-	  cout << student->lastname[i];
+	  cout << newstudent->lastname[i];
 	  
 	}
 
-	student->gpa = grade;
+	newstudent->gpa = grade;
 	
-	student->id = idnum;
+	newstudent->id = idnum;
+
+	student[position] = newstudent;
 
 	add--;
       }
