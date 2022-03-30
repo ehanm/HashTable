@@ -3,8 +3,10 @@
 
 using namespace std;
 
-struct Node {
+class Node { // class for student information
 
+public:
+  
   Node* next = NULL;
   
   char firstname[1000];
