@@ -7,7 +7,7 @@ struct Node {
 
   int data;
 
-  Node* right;
-  Node* left;
+  Node* right = NULL;
+  Node* left = NULL;
 
 };
