@@ -1,3 +1,7 @@
+// This is Binary Search Tree! You can add numbers, delete numbers, search for numbers, and print them out!
+// Made by Ehan Masud, and completed 4/24/2022
+
+
 #include <iostream>
 #include <cstring>
 #include "node.h"
@@ -52,10 +56,10 @@ int main(){
       printfunction(head, 0);
       
     }
-    if (strcmp(input, "DELETE") == 0){
+    if (strcmp(input, "DELETE") == 0){ 
 
-      child = NULL;
-      
+      child = NULL; // resets every time deleting
+       
       cout << "What number do you want to delete?" << endl;
 
       cin >> x;
@@ -76,7 +80,7 @@ int main(){
 
 }
 
-void addfunction(Node* &node, int num){
+void addfunction(Node* &node, int num){ // insertion (determine based on how large number is)
   
   if (node == NULL){
 
@@ -108,7 +112,7 @@ void addfunction(Node* &node, int num){
   
 }
 
-void printfunction(Node* node, int depth){
+void printfunction(Node* node, int depth){ // print
 
   if (node == NULL){
 
@@ -139,7 +143,7 @@ void printfunction(Node* node, int depth){
 
 }
 
-void search(Node* node, int num){
+void search(Node* node, int num){ // searching
 
   if (node == NULL){
 
@@ -175,35 +179,12 @@ void search(Node* node, int num){
     
 }
 
-void deletefunction(Node* &parent, Node* &child, int num){
-
-  if (parent != NULL){
-
-    cout << "parent is " << parent->data << endl;
-
-  }
-  
-  cout << "child is " << child->data << endl;
-
-  if (child->left != NULL){
-
-    cout << "child left is " << child->left->data << endl;
-    
-  }
-
-  if (child->right != NULL){
-
-    cout << "child right is " << child->right->data << endl;
-
-  }
-
-  
-
+void deletefunction(Node* &parent, Node* &child, int num){ // deleting
   
   if (child == NULL){
 
     cout << "can't delete!" << endl;
-
+    return;
   }
   
   if (child->data < num){
@@ -251,23 +232,46 @@ void deletefunction(Node* &parent, Node* &child, int num){
 
       if (parent == NULL){
 
-        Node* temp = child;
+	if (child->right->left != NULL){
 
-	child = child->right;
+	  Node* temp = child->right->left;
+	  Node* dad = child->right;
 
-	delete temp;
+	  while (temp->left != NULL){
+	    
+	    dad = temp;
+	    temp = temp->left;
+
+	  }
+
+	  child->data = temp->data;
+	  dad->left = NULL;
+
+	}
+	else{	  
+	  child->data = child->right->data;
+	  child->right = NULL;
+	}
 	return;
       }
 
       else if (parent->left == child){
 
-        parent->left = child->right;
+	parent->left->data = child->right->data;
+
+	child->right = NULL;
+        return;
 
       }
       else if (parent->right == child){
 
-        parent->right = child->right;
+	
 
+	parent->right->data = child->right->data;
+
+	child->right = NULL;
+	return;
+	
       }
       delete child;
       return;
@@ -289,17 +293,69 @@ void deletefunction(Node* &parent, Node* &child, int num){
       
       else if (parent->left == child){
       
-	parent->left = child->left;
+	parent->left->data = child->left->data;
+
+	child->left = NULL;
+        return;
 
       }
       else if (parent->right == child){
 
-	parent->right = child->left;
+	parent->right->data = child->left->data;
+	child->left = NULL;
+	return;
 
       }
       delete child;
       return;
       
+    }
+    // case 3: has 2 children
+    else if (child->left != NULL && child->right != NULL){
+
+      // take the lowest from the right child
+
+      Node* temp = child->right;
+      Node* dad = NULL;
+
+      while (temp->left != NULL){
+
+	dad = temp;
+        temp = temp->left;
+
+      }
+
+      if (parent == NULL){
+
+        child->data = temp->data;
+
+	if (dad != NULL){
+
+	  dad->left = NULL;
+
+	}
+
+	else {
+
+	  child->right = NULL;
+
+	}
+        
+	return;
+
+      }
+
+      else {
+
+        child->data = temp->data;
+	dad->left = NULL;
+	
+        return;
+	
+
+      }
+
+
     }
     
   }
