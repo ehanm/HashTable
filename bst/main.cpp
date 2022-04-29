@@ -337,9 +337,12 @@ void deletefunction(Node* &parent, Node* &child, int num){ // deleting
 
 	else {
 
-	  child->right = NULL;
+	  
+	  temp->left = child->left;
+	  child = temp;
+	  
 
-	}
+	  }
         
 	return;
 
